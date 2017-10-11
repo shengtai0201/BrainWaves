@@ -1,0 +1,90 @@
+﻿@{
+    ViewData["Title"] = "Home Page";
+}
+@section styles{
+    <link href="~/lib/kendoui/2017.3.913/styles/kendo.common.min.css" rel="stylesheet" />
+    <link href="~/lib/kendoui/2017.3.913/styles/kendo.default.min.css" rel="stylesheet" />
+    <link href="~/lib/kendoui/2017.3.913/styles/kendo.default.mobile.min.css" rel="stylesheet" />
+}
+@section scripts{
+    <script src="~/lib/kendoui/2017.3.913/js/kendo.all.min.js"></script>
+
+    <script>
+        function createChart() {
+            $("#chart").kendoChart({
+                dataSource: {
+                    transport: {
+                        read: {
+                            url: "api/BrainWaves",
+                            dataType: "json"
+                        }
+                    },
+                    sort: {
+                        field: "index",
+                        dir: "asc"
+                    }
+                },
+                title: {
+                    text: "腦波"
+                },
+                legend: {
+                    position: "top"
+                },
+                seriesDefaults: {
+                    type: "area"
+                },
+                series: [{
+                    field: "delta",
+                    categoryField: "index",
+                    name: "Delta",
+                    color: "red"
+                }, {
+                    field: "theta",
+                    categoryField: "index",
+                    name: "Theta",
+                    color: "yellow"
+                }, {
+                    field: "alpha",
+                    categoryField: "index",
+                    name: "Alpha",
+                    color: "green"
+                }, {
+                    field: "beta",
+                    categoryField: "index",
+                    name: "Beta",
+                    color: "blue"
+                }, {
+                    field: "gamma",
+                    categoryField: "index",
+                    name: "Gamma",
+                    color: "black"
+                }],
+                categoryAxis: {
+                    labels: {
+                        rotation: "auto"
+                    },
+                    crosshair: {
+                        visible: true
+                    }
+                },
+                valueAxis: {
+                    labels: {
+                        format: "N0"
+                    },
+                    majorUnit: 1
+                },
+                tooltip: {
+                    visible: true,
+                    shared: true,
+                    format: "0.0000"
+                }
+            });
+        }
+
+        $(document).ready(createChart);
+        $(document).bind("kendo:skinChange", createChart);
+    </script>
+}
+<div class="k-content wide">
+    <div id="chart"></div>
+</div>
